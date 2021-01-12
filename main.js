@@ -97,7 +97,7 @@ function updateResult (e) {
 
 function calculate () {
     const text = result.innerText
-    if(text[text.length-1] === '+' || result.innerText ==='-' || result.innerText ==='*' || result.innerText==='/'){
+    if(text[text.length-1] === '+' || text[text.length-1] ==='-' || text[text.length-1] ==='*' || text[text.length-1]==='/' || text[text.length-1]==='%'){
         result.innerText += input.value;
         input.value = eval(result.innerText);
         result.innerText = input.value;
