@@ -15,7 +15,7 @@ buttons.forEach(btn => {
         switch(btn.dataset.type) {
             case 'operator':
                 if(numberCheck){
-                    updateDisplay(e);
+                    updateResult(e);
                     numberCheck = false;
                 }
                 input.focus();
@@ -45,29 +45,26 @@ buttons.forEach(btn => {
 
 function updateDisplay (e) {
     const text = e.target.innerText;
+    if(Number(input.value) ===  eval(result.innerText.substring(0, result.innerText.length-1)) ||
+        input.value === result.innerText
+    ){
+        console.log(1);
+        input.value = text;
+        input.focus();
+        return;
+    };
     input.value += text;
     input.focus();
-}
+};
 
-// items.addEventListener('click', e => {
-//     const text = e.target.innerText;
-//     // let text = input.innerText;
-//     if(text === "="){
-//         calculate();
-//         return;
-//     }else if(text === "C"){
-//         input.value = "";
-//         input.focus();
-//         return;
-//     }else if(text === "CE"){
-//         result.innerText = "";
-//         input.value = "";
-//         input.focus();
-//         return;
-//     }
-//     input.value += text;
-//     input.focus();
-// });
+function updateResult (e) {
+    if(input.value === result.innerText){
+        result.innerText += e.target.innerText;
+        return;
+    }
+    result.innerText += input.value + e.target.innerText
+    input.value = eval(result.innerText.substring(0, result.innerText.length-1));
+};
 
 input.addEventListener('keypress', e=>{
     if(e.key === 'Enter'){
@@ -78,6 +75,11 @@ input.addEventListener('keypress', e=>{
 })
 
 
+function calculate () {
+    result.innerText += input.value;
+    input.value = eval(result.innerText);
+    result.innerText = input.value;
+}
 
 
 function numCheck(event) { 
@@ -97,17 +99,4 @@ function numCheck(event) {
     return true;
     }
     return false;
-}
-
-
-function calculate () {
-    if(result.innerText && (input.value[0] === '+' || input.value[0] === '-' || input.value[0] === '*' || input.value[0] === '/')){
-        result.innerText += input.value;
-        result.innerText = eval(result.innerText);
-        input.value = "";
-        return;
-    }
-    result.innerText = eval(input.value);
-    input.value = "";
-    return;
 }
