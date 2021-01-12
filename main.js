@@ -47,19 +47,18 @@ function numCheck(e) {
     if(e.key === '-'
     || e.key === '+'
     || e.key === '*'
-    || e.key === '/'){
+    || e.key === '/'
+    || e.key === '%'){
         if(numberCheck){
             updateResult(e);
             numberCheck = false;
         }
         input.focus();
     }else if(e.key === 'Enter'){
-        console.log('엔터');
         calculate();
         numberCheck = true;
     }else if(e.key >= 0 && e.key <= 9){
         numberCheck = true;
-        console.log('숫자');
         updateDisplay (e);
     }else if(e.key === '.' ){
         if(numberCheck){
@@ -73,7 +72,10 @@ function updateDisplay (e) {
     const text = e.target.innerText || e.key;
     if(Number(input.value) ===  eval(result.innerText.substring(0, result.innerText.length-1)) ||
         input.value === result.innerText
-    ){
+    ){  
+        if(input.value === result.innerText){
+            result.innerText = '';
+        }
         input.value = text;
         input.focus();
         return;
@@ -83,7 +85,6 @@ function updateDisplay (e) {
 };
 
 function updateResult (e) {
-    console.log(numberCheck);
     const text = e.target.innerText || e.key;
     if(input.value === result.innerText){
         result.innerText += text;
@@ -95,9 +96,12 @@ function updateResult (e) {
 
 
 function calculate () {
-    result.innerText += input.value;
-    input.value = eval(result.innerText);
-    result.innerText = input.value;
+    const text = result.innerText
+    if(text[text.length-1] === '+' || result.innerText ==='-' || result.innerText ==='*' || result.innerText==='/'){
+        result.innerText += input.value;
+        input.value = eval(result.innerText);
+        result.innerText = input.value;
+    }
 }
 
 // function numCheck(e) { 
