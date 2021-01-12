@@ -43,12 +43,37 @@ buttons.forEach(btn => {
     })
 })
 
+function numCheck(e) { 
+    if(e.key === '-'
+    || e.key === '+'
+    || e.key === '*'
+    || e.key === '/'){
+        if(numberCheck){
+            updateResult(e);
+            numberCheck = false;
+        }
+        input.focus();
+    }else if(e.key === 'Enter'){
+        console.log('엔터');
+        calculate();
+        numberCheck = true;
+    }else if(e.key >= 0 && e.key <= 9){
+        numberCheck = true;
+        console.log('숫자');
+        updateDisplay (e);
+    }else if(e.key === '.' ){
+        if(numberCheck){
+            numberCheck = false;
+        }
+    }
+    return false;
+}
+
 function updateDisplay (e) {
-    const text = e.target.innerText;
+    const text = e.target.innerText || e.key;
     if(Number(input.value) ===  eval(result.innerText.substring(0, result.innerText.length-1)) ||
         input.value === result.innerText
     ){
-        console.log(1);
         input.value = text;
         input.focus();
         return;
@@ -58,21 +83,15 @@ function updateDisplay (e) {
 };
 
 function updateResult (e) {
+    console.log(numberCheck);
+    const text = e.target.innerText || e.key;
     if(input.value === result.innerText){
-        result.innerText += e.target.innerText;
+        result.innerText += text;
         return;
     }
-    result.innerText += input.value + e.target.innerText
+    result.innerText += input.value + text;
     input.value = eval(result.innerText.substring(0, result.innerText.length-1));
 };
-
-input.addEventListener('keypress', e=>{
-    if(e.key === 'Enter'){
-        calculate();
-        return;
-    }
-
-})
 
 
 function calculate () {
@@ -81,22 +100,24 @@ function calculate () {
     result.innerText = input.value;
 }
 
+// function numCheck(e) { 
+//     if(e.key === '.' 
+//     || e.key === '-'
+//     || e.key === '+'
+//     || e.key === '*'
+//     || e.key === '/')
+//         {if(numberCheck){
+//             numberCheck = false;
+//             return true
+//         }
+//     }
+//     else if(e.key === 'Eneter'
+//     || e.key >= 0 && e.key <= 9) {
+//         console.log(e.key);
+//         numberCheck = true;
+//     return true;
+//     }
+//     return false;
+// }
 
-function numCheck(event) { 
-    if(event.key === '.' 
-    || event.key === '-'
-    || event.key === '+'
-    || event.key === '*'
-    || event.key === '/')
-        {if(numberCheck){
-            numberCheck = false;
-            return true
-        }
-    }
-    else if(event.key === 'Eneter'
-    || event.key >= 0 && event.key <= 9) {
-        numberCheck = true;
-    return true;
-    }
-    return false;
-}
+
